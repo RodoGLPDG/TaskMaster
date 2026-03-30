@@ -1,8 +1,10 @@
 package com.rodolfo.taskMaster.controller;
 
+import com.rodolfo.taskMaster.dto.TaskRequest;
 import com.rodolfo.taskMaster.entity.Task;
 import com.rodolfo.taskMaster.service.TaskService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,15 +22,23 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PostMapping
-    public Task createTask(@RequestBody Task task) {
-
-        String email = SecurityContextHolder
+    private String getCurrentUserEmail() {
+        return SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
+    }
 
-        return taskService.createTask(task, email);
+
+    @PostMapping
+    public Task createTask(@Valid @RequestBody TaskRequest request) {
+
+        Task task = new Task();
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setCompleted(request.isCompleted());
+
+        return taskService.createTask(task, getCurrentUserEmail());
     }
 
     @GetMapping

@@ -23,7 +23,7 @@ public class TaskServiceImpl implements TaskService {
     public Task createTask(Task task, String email) {
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("usuario no encontrado"));
 
         task.setUser(user);
 
@@ -34,7 +34,7 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getUserTasks(String email) {
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("usuario no encontrado"));
 
         return taskRepository.findByUserId(user.getId());
     }
