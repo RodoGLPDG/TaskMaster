@@ -17,12 +17,12 @@ public class Task {
     private User user;
 
     private String description;
-    private boolean completed;
+    private Boolean completed;
 
     public Task() {
     }
 
-    public Task(Long id, String title, User user, String description, boolean completed) {
+    public Task(Long id, String title, User user, String description, Boolean completed) {
         this.id = id;
         this.title = title;
         this.user = user;
@@ -62,11 +62,11 @@ public class Task {
         this.description = description;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 }

@@ -16,7 +16,19 @@ public class TaskRequest {
     private String description;
 
     @Schema(description = "Estado de la tarea", example = "false")
-    private boolean completed;
+    private Boolean  completed;
+
+    private Long userId;
+
+    public TaskRequest() {
+    }
+
+    public TaskRequest(String title, String description, Boolean  completed, Long userId) {
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+        this.userId = userId;
+    }
 
     public String getTitle() {
         return title;
@@ -34,20 +46,19 @@ public class TaskRequest {
         this.description = description;
     }
 
-    public boolean isCompleted() {
+    public Boolean getCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 
-    public TaskRequest(String title, String description, boolean completed) {
-        this.title = title;
-        this.description = description;
-        this.completed = completed;
+    public Long getUserId() {
+        return userId;
     }
 
-    public TaskRequest() {
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

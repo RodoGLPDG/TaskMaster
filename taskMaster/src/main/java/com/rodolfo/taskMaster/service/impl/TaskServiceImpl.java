@@ -1,7 +1,10 @@
 package com.rodolfo.taskMaster.service.impl;
 
+import com.rodolfo.taskMaster.dto.TaskRequest;
+import com.rodolfo.taskMaster.dto.TaskResponse;
 import com.rodolfo.taskMaster.entity.Task;
 import com.rodolfo.taskMaster.entity.User;
+import com.rodolfo.taskMaster.mapper.TaskMapper;
 import com.rodolfo.taskMaster.repository.TaskRepository;
 import com.rodolfo.taskMaster.repository.UserRepository;
 import com.rodolfo.taskMaster.service.TaskService;
@@ -20,22 +23,23 @@ public class TaskServiceImpl implements TaskService {
         this.userRepository = userRepository;
     }
 
-    public Task createTask(Task task, String email) {
+    public TaskResponse create(TaskRequest request) {
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("usuario no encontrado"));
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        task.setUser(user);
+        Task task = TaskMapper.toEntity(request, user);
 
-        return taskRepository.save(task);
+        Task saved = taskRepository.save(task);
+
+        return TaskMapper.toResponse(saved);
     }
 
 
-    public List<Task> getUserTasks(String email) {
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("usuario no encontrado"));
-
-        return taskRepository.findByUserId(user.getId());
+    public List<TaskResponse> getAll() {
+        return taskRepository.findAll()
+                .stream()
+                .map(TaskMapper::toResponse)
+                .toList();
     }
 }

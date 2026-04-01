@@ -1,6 +1,7 @@
 package com.rodolfo.taskMaster.controller;
 
 import com.rodolfo.taskMaster.dto.TaskRequest;
+import com.rodolfo.taskMaster.dto.TaskResponse;
 import com.rodolfo.taskMaster.entity.Task;
 import com.rodolfo.taskMaster.service.TaskService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,27 +30,14 @@ public class TaskController {
                 .getName();
     }
 
-
     @PostMapping
-    public Task createTask(@Valid @RequestBody TaskRequest request) {
-
-        Task task = new Task();
-        task.setTitle(request.getTitle());
-        task.setDescription(request.getDescription());
-        task.setCompleted(request.isCompleted());
-
-        return taskService.createTask(task, getCurrentUserEmail());
+    public TaskResponse create(@Valid @RequestBody TaskRequest request) {
+        return taskService.create(request);
     }
 
     @GetMapping
-    public List<Task> getTasks() {
-
-        String email = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
-
-        return taskService.getUserTasks(email);
+    public List<TaskResponse> getAll() {
+        return taskService.getAll();
     }
 
 }
